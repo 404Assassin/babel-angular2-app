@@ -1,55 +1,50 @@
 import {Component, View, Input} from 'angular2/core';
 import {RouteConfig, RouteParams, ROUTER_DIRECTIVES} from 'angular2/router';
-
 import {Greeter} from './services';
-
 @Component({
-  selector: 'hello',
-  template: '<p>{{ message }}</p>'
+    selector: 'hello',
+    template: '<p>{{ message }}</p>'
 })
 export class Hello {
-  constructor(greeter: Greeter) {
-    this.message = greeter.say('hello', 'Angular 2');
-  }
+    constructor(greeter:Greeter) {
+        this.message = greeter.say('hello', 'Angular 2');
+    }
 }
-
 @Component({
-  selector: 'ciao',
-  template: '<p>{{ message }}</p>'
+    selector: 'ciao',
+    template: '<p>{{ message }}</p>'
 })
 export class Ciao {
-  constructor(greeter: Greeter, routeParams: RouteParams) {
-    this.message = greeter.say('ciao', routeParams.get('name'));
-  }
+    constructor(greeter:Greeter, routeParams:RouteParams) {
+        this.message = greeter.say('ciao', routeParams.get('name'));
+    }
 }
-
 @Component({
-  selector: 'linker',
-  template: '<p><a [href]="url" [title]="name">{{ name }}</a></p>'
+    selector: 'linker',
+    template: '<p><a [href]="url" [title]="name">{{ name }}</a></p>'
 })
 export class Linker {
-  @Input() name;
-  @Input() url;
+    @Input() name;
+    @Input() url;
 }
-
 @Component({
-  selector: 'hello-app',
-  viewProviders: [Greeter]
+    selector: 'hello-app',
+    viewProviders: [Greeter]
 })
 @View({
-  directives: [ROUTER_DIRECTIVES, Linker],
-  template: `
+    directives: [ROUTER_DIRECTIVES, Linker],
+    template: `
     <ul>
       <li><a [routerLink]="['/Hello']">Hello</a></li>
       <li><a [routerLink]="['/Ciao', { name: 'ng2' }]">Ciao</a></li>
     </ul>
     <router-outlet></router-outlet>
-    <linker name="GitHub" url="https://github.com/shuhei/babel-angular2-app"></linker>
+    <linker name="tngmakes" url="http://tngmakes.com"></linker>
   `
 })
 @RouteConfig([
-  { path: '/', component: Hello, name: 'Hello' },
-  { path: '/ciao/:name', component: Ciao, name: 'Ciao' }
+    {path: '/', component: Hello, name: 'Hello'},
+    {path: '/ciao/:name', component: Ciao, name: 'Ciao'}
 ])
 export class HelloApp {
 }
