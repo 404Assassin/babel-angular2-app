@@ -10,4 +10,4 @@ console.error('test error');
 console.warn('test warn');
 console.info('test info');
 console.trace('test trace');
-console.dir([1,2,3,4,5,6]);
+console.dir([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);

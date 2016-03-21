@@ -34,10 +34,9 @@ export class Linker {
 @View({
     directives: [ROUTER_DIRECTIVES, Linker],
     template: `
-    <ul>
-      <li><a [routerLink]="['/Hello']">Hello</a></li>
-      <li><a [routerLink]="['/Ciao', { name: 'ng2' }]">Ciao</a></li>
-    </ul>
+    <div><button><a [routerLink]="['/Hello']">Hello</a></button></div>
+    <div><button><a [routerLink]="['/Ciao', { name: 'ng2' }]">Ciao</a></button></div>
+    <div><button><a [routerLink]="['/Ciao', { name: 'ng2' }]">Ciao</a></button></div>
     <router-outlet></router-outlet>
     <linker name="tngmakes" url="http://tngmakes.com"></linker>
   `

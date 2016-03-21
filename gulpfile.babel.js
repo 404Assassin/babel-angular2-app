@@ -12,13 +12,18 @@ import webserver from 'gulp-webserver';
 import livereload from 'gulp-livereload';
 gulp.task('copy', () => {
     return gulp.src([
-            'src/index.html',
-            'node_modules/angular2/bundles/angular2-polyfills.js',
-            'node_modules/angular2/bundles/angular2-polyfills.min.js'
+            'src/index.html'
         ])
         .pipe(gulp.dest('public'));
 });
-gulp.task('build', ['copy'], () => {
+gulp.task('copyjs', () => {
+    return gulp.src([
+            'node_modules/angular2/bundles/angular2-polyfills.js',
+            'node_modules/angular2/bundles/angular2-polyfills.min.js'
+        ])
+        .pipe(gulp.dest('public/js'));
+});
+gulp.task('build', ['copy','copyjs'], () => {
     const b = browserify('src/index.js', {debug: true})
         .transform(babelify);
     return bundle(b);
@@ -44,7 +49,7 @@ gulp.task('webserver', function () {
 gulp.task('clean', () => {
     return del('public');
 });
-gulp.task('default', ['copy', 'watch', 'webserver']);
+gulp.task('default', ['copy', 'copyjs', 'watch', 'webserver']);
 function bundle(b) {
     return b.bundle()
         .on('error', (e) => {
@@ -54,36 +59,8 @@ function bundle(b) {
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('public'))
+        .pipe(gulp.dest('public/js'))
         .pipe(livereload({start: true}));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-// // add custom browserify options here
-// const customOpts = {
-//     entries: ['./src/index.js'],
-//     debug: true
-// };
-// const opts = assign({}, watchify.args, customOpts);
-// const b = watchify(browserify(opts))
-//     .transform(babelify);
-// // add transformations here
-// // so you can run `gulp js` to build the file
-// gulp.task('js', bundlejs);
-// // on any dep update, runs the bundler
-// b.on('update', bundlejs);
-// // output build logs to terminal
-// b.on('log', gutil.log);
-// function bundlejs() {
-//     return b.bundle()
-//         // log errors if they happen
-//         .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-//         .pipe(source('bundle.js'))
-//         // optional, remove if you don't need to buffer file contents
-//         .pipe(buffer())
-//         // optional, remove if you dont want sourcemaps
-//         .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
-//         // Add transformation tasks to the pipeline here.
-//         .pipe(sourcemaps.write('./')) // writes .map file
-//         .pipe(gulp.dest('./dist'));
-// }
