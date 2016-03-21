@@ -20,6 +20,15 @@ export class Ciao {
     }
 }
 @Component({
+    selector: 'GutenTag',
+    template: '<p>{{ message }}</p>'
+})
+export class GutenTag {
+    constructor(greeter:Greeter, routeParams:RouteParams) {
+        this.message = greeter.say('guten tag', routeParams.get('name'));
+    }
+}
+@Component({
     selector: 'linker',
     template: '<p><a [href]="url" [title]="name">{{ name }}</a></p>'
 })
@@ -37,13 +46,15 @@ export class Linker {
     <div><button><a [routerLink]="['/Hello']">Hello</a></button></div>
     <div><button><a [routerLink]="['/Ciao', { name: 'ng2' }]">Ciao</a></button></div>
     <div><button><a [routerLink]="['/Ciao', { name: 'ng2' }]">Ciao</a></button></div>
+    <div><button><a [routerLink]="['/GutenTag', { name: 'ng2' }]">guten tag</a></button></div>
     <router-outlet></router-outlet>
     <linker name="tngmakes" url="http://tngmakes.com"></linker>
   `
 })
 @RouteConfig([
     {path: '/', component: Hello, name: 'Hello'},
-    {path: '/ciao/:name', component: Ciao, name: 'Ciao'}
+    {path: '/ciao/:name', component: Ciao, name: 'Ciao'},
+    {path: '/GutenTag/:name', component: GutenTag, name: 'GutenTag'}
 ])
 export class HelloApp {
 }
