@@ -52,7 +52,7 @@ gulp.task('webserver', function () {
             port: 9090,
             livereload: true,
             directoryListing: true,
-            open: true
+            open: 'http://localhost:9090/index.html'
         }));
 });
 gulp.task('clean', () => {
