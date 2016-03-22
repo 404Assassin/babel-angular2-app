@@ -50,11 +50,13 @@
   "dependencies": {
     "angular2": "2.0.0-beta.8",
     "babel-polyfill": "^6.6.1",
+    "bootstrap": "git://github.com/twbs/bootstrap.git#v4-dev",
     "es6-shim": "^0.33.13",
     "gulp-livereload": "^3.8.1",
     "gulp-webserver": "^0.9.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
+    "sassdoc": "^2.1.20",
     "zone.js": "0.5.15"
   }
 }

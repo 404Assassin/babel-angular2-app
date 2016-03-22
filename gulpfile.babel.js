@@ -10,7 +10,9 @@ import babelify from 'babelify';
 import del from 'del';
 import webserver from 'gulp-webserver';
 import livereload from 'gulp-livereload';
-// import stylus from 'gulp-stylus';
+import sass from 'gulp-sass';
+import autoprefixer from 'gulp-autoprefixer';
+import sassdoc from 'sassdoc';
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 const paths = {
@@ -20,13 +22,23 @@ const paths = {
     jsSrc: './src/index.js',
     jsDest: './public/js',
     jsBundled: 'bundle.js',
-    css: 'css',
-    stylesSrc: './src/styles',
-    stylesDest: './public/css'
+    stylesSrc: './src/styles/**/*.scss',
+    stylesDest: './public/css',
+    stylesDocsDest: './public/css/sassdoc'
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-gulp.task('default', ['copy', 'copyjs', 'watch', 'webserver']);
+gulp.task('default', ['stylespreview','stylesdebug', 'copy', 'copyjs', 'watch', 'watchscss', 'webserver']);
+gulp.task('build', ['stylesprod', 'copy', 'copyjs'], () => {
+    const b = browserify(paths.jsSrc, {
+        debug: true
+    })
+        .transform(babelify);
+    return bundle(b);
+});
+gulp.task('clean', () => {
+    return del(paths.build);
+});
 gulp.task('copy', () => {
     return gulp.src([
             paths.htmlSrc
@@ -40,11 +52,6 @@ gulp.task('copyjs', () => {
         ])
         .pipe(gulp.dest(paths.jsDest));
 });
-gulp.task('build', ['copy', 'copyjs'], () => {
-    const b = browserify(paths.jsSrc, {debug: true})
-        .transform(babelify);
-    return bundle(b);
-});
 gulp.task('webserver', function () {
     gulp.src(paths.build)
         .pipe(webserver({
@@ -54,9 +61,6 @@ gulp.task('webserver', function () {
             directoryListing: true,
             open: 'http://localhost:9090/index.html'
         }));
-});
-gulp.task('clean', () => {
-    return del(paths.build);
 });
 function bundle(b) {
     return b.bundle()
@@ -72,14 +76,19 @@ function bundle(b) {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 gulp.task('watch', function () {
-    const bundler = watchify(browserify(paths.jsSrc, {
-        cache: {},
-        packageCache: {},
-        fullPaths: true,
-        transform: ['babelify'],
-        debug: true
-    }));
-
+    const bundler = watchify(
+        browserify(
+            paths.jsSrc, {
+                noparse: ['jquery', 'lodash'],
+                cache: {},
+                packageCache: {},
+                fullPaths: true,
+                transform: ['babelify'],
+                debug: true
+            }
+        )
+    ).on('log', function (msg) {
+    });
     function rebundle() {
         console.warn('rebundled!');
         return bundler.bundle()
@@ -91,6 +100,60 @@ gulp.task('watch', function () {
             .pipe(livereload({start: true}));
     }
     bundler.on('update', rebundle);
-    // run any other gulp.watch tasks
     return rebundle();
+});
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+const autoprefixerOptions = {
+    browsers: ['last 2 versions', '> 5%', 'Firefox ESR']
+};
+const sassOptions = {
+
+    errLogToConsole: true,
+    outputStyle: 'expanded'
+};
+gulp.task('watchscss', function () {
+    return gulp
+        .watch(paths.stylesSrc, ['stylespreview'])
+        .on('change', function (event) {
+            console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+        });
+});
+gulp.task('stylesprod', function () {
+    gulp.src(paths.stylesSrc)
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(autoprefixer(autoprefixerOptions))
+        .pipe(gulp.dest(paths.stylesDest))
+});
+gulp.task('stylespreview', function () {
+    gulp.src(paths.stylesSrc)
+        .pipe(sass(sassOptions).on('error', sass.logError))
+        .pipe(autoprefixer(autoprefixerOptions))
+        .pipe(gulp.dest(paths.stylesDest))
+});
+gulp.task('stylesdebug', function () {
+    gulp.src(paths.stylesSrc)
+        .pipe(sourcemaps.init())
+        .pipe(sass(sassOptions).on('error', sass.logError))
+        .pipe(sourcemaps.write('.', {includeContent: false, sourceRoot: '../src'}))
+        .pipe(gulp.dest(paths.stylesDest))
+});
+gulp.task('stylesdoc', function () {
+    var options = {
+        dest: paths.stylesDocsDest,
+        verbose: true,
+        display: {
+            access: ['public', 'private'],
+            alias: true,
+            watermark: true,
+        },
+        groups: {
+            'undefined': 'Ungrouped',
+            foo: 'Foo group',
+            bar: 'Bar group',
+        },
+        basePath: 'https://github.com/SassDoc/sassdoc',
+    };
+    return gulp.src(paths.stylesSrc)
+        .pipe(sassdoc(options));
 });

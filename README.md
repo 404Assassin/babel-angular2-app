@@ -1,75 +1,68 @@
 # Build Angular 2 app with Babel
 
-A skeleton [Angular 2](https://angular.io/) app built with [Babel](https://babeljs.io/), [Browserify](http://browserify.org/), [Watchify](https://github.com/substack/watchify).
+A skeleton [Angular 2](https://angular.io/) app built with [Babel](https://babeljs.io/), [Browserify](http://browserify.org/), [Watchify](https://github.com/substack/watchify), [Bootstrap4 alpha](https://github.com/twbs/bootstrap/tree/v4-dev), [sassdoc](http://sassdoc.com/).
 
-- Uses Babel instead of [TypeScript](http://www.typescriptlang.org/)/[Traceur](https://github.com/google/traceur-compiler).
-- Supports class/parameter decorators and parameter type annotations with [Babel](https://github.com/babel/babel), [babel-plugin-transform-decorators-legacy](https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy) and [babel-plugin-angular2-annotations](https://github.com/shuhei/babel-plugin-angular2-annotations).
-  - **Parameter decorator is not supported because the syntax is not supported by Babel's parser.**
-- Watch bundles JavaScript files into one file with Browserify, Watchify and livereload.
+This build includes Angular2 beta, JS source maps, trans-compile of both Typescript and ES6 to ES5 using Babel, Browserify/Watchify updates using Watchify fast cached builds, live reload for auto content refresh and a seed ng2 beta app build. Bootstrap4 alpha, CSS auto prefixes, SCSS/SASS documentation using [sassdoc](http://sassdoc.com/)  and CSS source maps.
 
-## Try
-
-### Install
-
-Clone/fork this repo and:
-
+### Installation
 ```
-npm install
+run: npm install
 ```
 
-### Build
+###Builds by feature
+####Preview Build Features
+The preview build includes both the CSS and JS. The build includes Bootstrap4 alpha, CSS auto prefixes and CSS source maps. The JS build includes JS source maps, trans-compile of both Typescript and ES6 to ES5 using Babel, Browserify/Watchify update for fast cached builds, live reload for auto content refresh and a seed ng2 beta app build.
 
-Build once:
+run:
+```
+npm start
+```
 
+####Production Build Features
+Production version includes CSS mimification and CSS auto prefixes. Production does not include source maps and style document output.
+To compile/transpile for production first,
+
+run:
+```
+gulp clean
+```
+then run,
 ```
 npm run build
 ```
 
-Watch files and rebuild:
+####Styles Documentation Build
+SCSS/SASS documentation using sassdoc: http://sassdoc.com/
+Style document output is not included as part of either build but can be run separately. Any comments in SCSS/SASS that include three escapes ‘///' will be added to the documentation. Specific annotations types here: http://sassdoc.com/annotations/
 
+To compile doc run:
 ```
-npm run watch
-# or
-npm start
+gulp stylesdoc
 ```
+Documents output to this url: http://localhost:9090/css/sassdoc/index.html
 
-### Preview
-
-```
-npm install -g http-server
-http-server public
-```
-
-### Test
-
+####JS unit and end to end tests
 Unit and e2e tests:
-
 ```
 npm test
 ```
-
 Unit tests:
 
 ```
 npm run unit
 ```
-
 e2e tests:
 
 ```
 npm run e2e
 ```
 
-## Motivation
+### Notes
+- This is a forked build of [this](https://github.com/shuhei/babel-angular2-app) ng2 beta seed.
+- Supports class/parameter decorators and parameter type annotations with [Babel](https://github.com/babel/babel), [babel-plugin-transform-decorators-legacy](https://github.com/loganfsmyth/babel-plugin-transform-decorators-legacy) and [babel-plugin-angular2-annotations](https://github.com/shuhei/babel-plugin-angular2-annotations).
+  - **Parameter decorator is not supported because the syntax is not supported by Babel's parser.**
+- Watch bundles JavaScript files into one file with Browserify, Watchify and livereload.
 
-Back in the time of angular2 alpha.18, `angular/quickstart` provided us to try Angular 2 app with on-the-fly transpilation and lazy-loading, which resulted in long waiting time for each file change. Also, I was not familiar with the Traceur tool stack and its output. [angular2 npm package](https://www.npmjs.com/package/angular2) said *The files under /es6 are es6 compatible files that can be transpiled to es5 using any transpiler.* So I gave it a shot.
-
-## Babel transformer plugin
-
-To support type annotation and property decorator without initializer, this skeleton app uses the following external Babel transform plugin that I made:
-
-- [babel-plugin-angular2-annotations](https://github.com/shuhei/babel-plugin-angular2-annotations)
-
-## License
+### License
 
 [ISC](https://opensource.org/licenses/ISC)
