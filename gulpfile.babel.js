@@ -26,7 +26,7 @@ const paths = {
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-gulp.task('default', ['stylespreview','stylesdebug', 'copy', 'copyjs', 'watch', 'watchscss', 'webserver']);
+gulp.task('default', ['stylespreview','stylesdebug', 'copy', 'copyjs', 'webserver', 'watch', 'watchscss']);
 gulp.task('build', ['stylesprod', 'copy', 'copyjs'], () => {
     const b = browserify(paths.jsSrc, {
         debug: true
