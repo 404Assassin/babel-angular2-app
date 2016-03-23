@@ -6,7 +6,8 @@ import browserify from 'browserify';
 import watchify from 'watchify';
 import babelify from 'babelify';
 import del from 'del';
-import webserver from 'gulp-webserver';
+// import webserver from 'gulp-webserver';
+import connect from 'gulp-connect';
 import livereload from 'gulp-livereload';
 import sass from 'gulp-sass';
 import autoprefixer from 'gulp-autoprefixer';
@@ -26,7 +27,7 @@ const paths = {
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-gulp.task('default', ['webserver', 'stylespreview','stylesdebug', 'copy', 'copyjs', 'watch', 'watchscss']);
+gulp.task('default', ['connect', 'stylespreview','stylesdebug', 'copy', 'copyjs', 'watch', 'watchscss']);
 gulp.task('build', ['stylesprod', 'copy', 'copyjs'], () => {
     const b = browserify(paths.jsSrc, {
         debug: true
@@ -50,15 +51,21 @@ gulp.task('copyjs', () => {
         ])
         .pipe(gulp.dest(paths.jsDest));
 });
-gulp.task('webserver', function () {
-    gulp.src(paths.build)
-        .pipe(webserver({
-            host: 'localhost',
-            port: 9090,
-            livereload: true,
-            directoryListing: true,
-            open: 'http://localhost:9090/index.html'
-        }));
+// gulp.task('webserver', function () {
+//     gulp.src(paths.build)
+//         .pipe(webserver({
+//             host: 'localhost',
+//             port: 9090,
+//             livereload: true,
+//             directoryListing: true,
+//             open: 'http://localhost:9090/index.html'
+//         }));
+// });
+gulp.task('connect', function() {
+    connect.server({
+        root: 'public',
+        livereload: true
+    });
 });
 function bundle(b) {
     return b.bundle()
