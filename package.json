@@ -1,5 +1,5 @@
 {
-  "name": "babel-angular2-app",
+  "name": "ng2-es6-app",
   "version": "0.0.1",
   "description": "A skeleton Angular 2 app built with babel.",
   "scripts": {
@@ -8,6 +8,7 @@
     "build": "gulp build",
     "watch": "gulp watch",
     "clean": "gulp clean",
+    "docs": "gulp stylesdoc",
     "test": "npm run unit && npm run e2e",
     "unit": "karma start --single-run",
     "tdd": "karma start",
@@ -35,7 +36,6 @@
     "gulp-sass": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.7",
-    "http-server": "^0.9.0",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.15",
     "karma-browserify": "^5.0.2",
@@ -57,7 +57,7 @@
     "bootstrap": "git://github.com/twbs/bootstrap.git#v4-dev",
     "es6-shim": "^0.33.13",
     "gulp-livereload": "^3.8.1",
-    "gulp-webserver": "^0.9.1",
+    "gulp-open": "^1.0.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
     "sassdoc": "^2.1.20",

@@ -1,4 +1,4 @@
-# Build Angular 2 app with Babel
+# Angular 2 app with Bootstrap4, Babel, Watchify, and sass doc
 
 A skeleton [Angular 2](https://angular.io/) app built with [Babel](https://babeljs.io/), [Browserify](http://browserify.org/), [Watchify](https://github.com/substack/watchify), [Bootstrap4 alpha](https://github.com/twbs/bootstrap/tree/v4-dev), [sassdoc](http://sassdoc.com/).
 
@@ -24,7 +24,7 @@ To compile/transpile for production first,
 
 run:
 ```
-gulp clean
+npm run clean
 ```
 then run,
 ```
@@ -37,7 +37,7 @@ Style document output is not included as part of either build but can be run sep
 
 To compile doc run:
 ```
-gulp stylesdoc
+npm run docs
 ```
 Documents output to this url: http://localhost:9090/css/sassdoc/index.html
 
