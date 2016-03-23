@@ -39,7 +39,7 @@ To compile doc run:
 ```
 npm run docs
 ```
-Documents output to this url: http://localhost:9090/css/sassdoc/index.html
+Documents output and can be accessed, with the server running, at this url: [http://localhost:8080/css/sassdoc/index.html](http://localhost:8080/css/sassdoc/index.html)
 
 ####JS unit and end to end tests
 Unit and e2e tests:
