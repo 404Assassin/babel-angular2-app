@@ -1,8 +1,8 @@
-# Angular 2 app with Bootstrap4, Babel, Watchify, and SassDoc
+# Angular 2 app with Bootstrap4, Babel, Watchify, and SC5 StyleGuide
 
-A skeleton [Angular 2](https://angular.io/) app built with [Babel](https://babeljs.io/), [Browserify](http://browserify.org/), [Watchify](https://github.com/substack/watchify), [Bootstrap4 alpha](https://github.com/twbs/bootstrap/tree/v4-dev), [SassDoc](http://sassdoc.com/).
+A skeleton [Angular 2](https://angular.io/) app built with [Babel](https://babeljs.io/), [Browserify](http://browserify.org/), [Watchify](https://github.com/substack/watchify), [Bootstrap4 alpha](https://github.com/twbs/bootstrap/tree/v4-dev), and [SC5 StyleGuide](http://styleguide.sc5.io/).
 
-This build includes Angular2 beta, JS source maps, trans-compile of both Typescript and ES6 to ES5 using Babel, Browserify/Watchify updates using Watchify fast cached builds, live reload for auto content refresh and a seed ng2 beta app build. Bootstrap4 alpha, CSS auto prefixes, SCSS/SASS documentation using [SassDoc](http://sassdoc.com/)  and CSS source maps.
+This build includes Angular2 beta, JS source maps, trans-compile of both Typescript and ES6 to ES5 using Babel, Browserify/Watchify updates using Watchify fast cached builds, live reload for auto content refresh and a seed ng2 beta app build. Bootstrap4 alpha, development CSS source maps, CSS auto prefixes, SCSS/SASS/LESS/PostCSS documentation and living style guide using SC5 StyleGuide.
 
 ### Installation
 
