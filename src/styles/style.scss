@@ -1,17 +1,44 @@
 /// @author CIl1
+/*
+  Global Params
 
+  Styleguide 1.0.0
+*/
+/*
+Markup: Flexbox is enabled and like a boss!
+
+#enable-flex
+
+Styleguide 1.0.1 Flexbox!
+*/
 $enable-flex: true;
+/*
+Markup: Bootstrap4's grid classes are enabled and like a boss!
+
+Styleguide 1.0.2 Bootstrap Grid Classes Enabled
+*/
 $enable-grid-classes: true;
+/*
+Markup: Importing local custom classs which includes all Bootstrap4's variable classes!
 
-@import 'custom';
-@import '../../node_modules/bootstrap/scss/_variables.scss';
-@import '../../node_modules/bootstrap/scss/_mixins.scss';
-@import '../../node_modules/bootstrap/scss/_normalize.scss';
-@import '../../node_modules/bootstrap/scss/_reboot.scss';
-@import '../../node_modules/bootstrap/scss/_grid.scss';
+Styleguide 1.0.3 Included Bootstrap Imports
+*/
 
-//@import './bootstrap/scss/_variables.scss';
-//@import './bootstrap/scss/_mixins.scss';
-//@import './bootstrap/scss/_normalize.scss';
-//@import './bootstrap/scss/_reboot.scss';
-//@import './bootstrap/scss/_grid.scss';
+// Core variables and mixins
+@import "custom";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+// Reset and dependencies
+@import "../../node_modules/bootstrap/scss/normalize";
+@import "../../node_modules/bootstrap/scss/print";
+
+// Core CSS
+@import "../../node_modules/bootstrap/scss/reboot";
+@import "../../node_modules/bootstrap/scss/type";
+@import "../../node_modules/bootstrap/scss/images";
+@import "../../node_modules/bootstrap/scss/code";
+@import "../../node_modules/bootstrap/scss/grid";
+@import "../../node_modules/bootstrap/scss/tables";
+@import "../../node_modules/bootstrap/scss/forms";
+@import "../../node_modules/bootstrap/scss/buttons";

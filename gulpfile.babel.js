@@ -9,8 +9,10 @@ import del from 'del';
 import connect from 'gulp-connect';
 import open from 'gulp-open';
 import livereload from 'gulp-livereload';
+import duration from 'gulp-duration';
 import sass from 'gulp-sass';
 import autoprefixer from 'gulp-autoprefixer';
+import styleguide from 'sc5-styleguide';
 import sassdoc from 'sassdoc';
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,12 +24,16 @@ const paths = {
     jsDest: './public/js',
     jsBundled: 'bundle.js',
     stylesSrc: './src/styles/**/*.scss',
+    stylesSrcRoot: './src/styles/style.scss',
     stylesDest: './public/css',
+    stylesCSSDest: './public/css/style.css',
+    stylesGuideRoot: '/styleguide',
+    stylesGuideDest: './public/styleguide',
     stylesDocsDest: './public/css/sassdoc'
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
-gulp.task('default', ['connect', 'stylespreview', 'stylesdebug', 'copy', 'copyjs', 'watch', 'watchscss', 'open']);
+gulp.task('default', ['connect', 'stylespreview', 'stylesdebug', 'copy', 'copyjs', 'watch', 'watchscss', 'watchhtml', 'open']);
 gulp.task('build', ['stylesprod', 'copy', 'copyjs'], () => {
     const b = browserify(paths.jsSrc, {
         debug: true
@@ -71,10 +77,37 @@ function bundle(b) {
         })
         .pipe(source(paths.jsBundled))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(paths.jsDest));
 }
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+gulp.task('styleguide:generate', function() {
+    return gulp.src(paths.stylesSrc)
+        .pipe(styleguide.generate({
+            title: 'TNG Makes Styleguide',
+            server: true,
+            rootPath: paths.stylesGuideDest,
+            overviewPath: 'README.md',
+            parsers: {
+                scss: 'scss'
+            }
+        }))
+        .pipe(gulp.dest(paths.stylesGuideDest));
+});
+gulp.task('styleguide:applystyles', function() {
+    return gulp.src(paths.stylesSrcRoot)
+        .pipe(sass({
+            errLogToConsole: true
+        }))
+        .pipe(styleguide.applyStyles())
+        .pipe(gulp.dest(paths.stylesGuideDest));
+});
+// Start watching changes and update styleguide whenever changes are detected
+// Styleguide automatically detects existing server instance
+gulp.task('styleguidewatch', ['styleguide'], function() {
+    gulp.watch([paths.stylesSrc], ['styleguide']);
+});
+gulp.task('styleguide', ['styleguide:generate', 'styleguide:applystyles']);
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 gulp.task('watch', function () {
@@ -89,17 +122,17 @@ gulp.task('watch', function () {
                 debug: true
             }
         )
-    ).on('log', function (msg) {
-    });
-
+    );
+    var bundleTimer;
     function rebundle() {
-        console.warn('rebundled!');
+        bundleTimer = duration('Javascript bundle and reload duration');
         return bundler.bundle()
             .pipe(source(paths.jsBundled))
             .pipe(buffer())
             .pipe(sourcemaps.init({loadMaps: true}))
-            .pipe(sourcemaps.write('./'))
+            .pipe(sourcemaps.write())
             .pipe(gulp.dest(paths.jsDest))
+            .pipe(bundleTimer)
             .pipe(livereload({start: true}));
     }
 
@@ -118,6 +151,13 @@ const sassOptions = {
 gulp.task('watchscss', function () {
     return gulp
         .watch(paths.stylesSrc, ['stylespreview'])
+        .on('change', function (event) {
+            console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+        });
+});
+gulp.task('watchhtml', function () {
+    return gulp
+        .watch(paths.htmlSrc, ['copy'])
         .on('change', function (event) {
             console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
         });
